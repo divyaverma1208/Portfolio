@@ -765,6 +765,88 @@
     }
 
     /* ===================================================================
+       SKILLS SECTION
+       =================================================================== */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .skill-category {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 24px;
+      box-shadow: var(--shadow-md);
+      transition: all 0.3s ease;
+    }
+
+    .skill-category:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--accent);
+    }
+
+    .skill-category-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: var(--accent-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .skill-category-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 16px;
+    }
+
+    .skill-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .skill-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 14px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      transition: all 0.3s ease;
+      cursor: default;
+    }
+
+    .skill-badge:hover {
+      background: var(--accent-glow);
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* Stagger animation for skill badges */
+    .skill-category .skill-badge {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.4s ease, transform 0.4s ease, background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+    }
+
+    .skill-category.visible .skill-badge {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===================================================================
        PREFERS REDUCED MOTION
        =================================================================== */
     @media (prefers-reduced-motion: reduce) {
@@ -878,6 +960,10 @@
         grid-template-columns: 1fr;
         gap: 48px;
       }
+
+      .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
     /* ===================================================================
@@ -934,6 +1020,10 @@
 
       .stats-grid {
         grid-template-columns: 1fr 1fr;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -1134,6 +1224,79 @@
         </div>
       </div>
     </section>
+
+    <!-- ================================================================
+         SKILLS SECTION
+         ================================================================ -->
+    <section class="section" id="skills" aria-label="Skills">
+      <div class="section-inner">
+        <div class="reveal">
+          <div class="section-label">
+            <span class="label-line" aria-hidden="true"></span>
+            Skills
+          </div>
+          <h2 class="section-title">Technologies I work with</h2>
+        </div>
+
+        <div class="skills-grid">
+          <!-- Languages -->
+          <div class="skill-category reveal" id="skill-languages">
+            <div class="skill-category-icon" aria-hidden="true">💻</div>
+            <h3 class="skill-category-title">Languages</h3>
+            <div class="skill-badges">
+              <span class="skill-badge">Python</span>
+              <span class="skill-badge">JavaScript</span>
+              <span class="skill-badge">C++</span>
+              <span class="skill-badge">SQL</span>
+              <span class="skill-badge">HTML</span>
+              <span class="skill-badge">CSS</span>
+              <span class="skill-badge">TypeScript</span>
+            </div>
+          </div>
+
+          <!-- Frameworks -->
+          <div class="skill-category reveal" id="skill-frameworks">
+            <div class="skill-category-icon" aria-hidden="true">⚡</div>
+            <h3 class="skill-category-title">Frameworks</h3>
+            <div class="skill-badges">
+              <span class="skill-badge">React</span>
+              <span class="skill-badge">Node.js</span>
+              <span class="skill-badge">Express</span>
+              <span class="skill-badge">Flask</span>
+              <span class="skill-badge">TensorFlow</span>
+              <span class="skill-badge">PyTorch</span>
+            </div>
+          </div>
+
+          <!-- Tools -->
+          <div class="skill-category reveal" id="skill-tools">
+            <div class="skill-category-icon" aria-hidden="true">🛠️</div>
+            <h3 class="skill-category-title">Tools</h3>
+            <div class="skill-badges">
+              <span class="skill-badge">Git</span>
+              <span class="skill-badge">Docker</span>
+              <span class="skill-badge">VS Code</span>
+              <span class="skill-badge">Jupyter</span>
+              <span class="skill-badge">Linux</span>
+              <span class="skill-badge">AWS</span>
+            </div>
+          </div>
+
+          <!-- ML/AI -->
+          <div class="skill-category reveal" id="skill-ml">
+            <div class="skill-category-icon" aria-hidden="true">🧠</div>
+            <h3 class="skill-category-title">ML / AI</h3>
+            <div class="skill-badges">
+              <span class="skill-badge">NLP</span>
+              <span class="skill-badge">Computer Vision</span>
+              <span class="skill-badge">Deep Learning</span>
+              <span class="skill-badge">Data Analysis</span>
+              <span class="skill-badge">Scikit-learn</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- ================================================================
@@ -1235,6 +1398,15 @@
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             entry.target.classList.add('visible');
+
+            // Stagger skill badges inside skill-category cards
+            if (entry.target.classList.contains('skill-category')) {
+              const badges = entry.target.querySelectorAll('.skill-badge');
+              badges.forEach((badge, i) => {
+                badge.style.transitionDelay = (i * 0.07) + 's';
+              });
+            }
+
             observer.unobserve(entry.target);
           }
         });
